@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#18152d">
+  <meta name="description" content="Transforme os CSVs mensais do Consumidor.gov.br em um boletim de atendimento com números verificáveis.">
+  <title>Pulse Analytics</title>
+  <link rel="icon" href="./radar.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <svg class="icon-definitions" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="icon-radar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12 20 4"/><circle cx="12" cy="12" r="1.25" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="icon-analysis" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.3"/><rect x="14" y="3" width="7" height="7" rx="1.3"/><rect x="3" y="14" width="7" height="7" rx="1.3"/><rect x="14" y="14" width="7" height="7" rx="1.3"/></symbol>
+    <symbol id="icon-file" viewBox="0 0 24 24"><path d="M13 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10Z"/><path d="M13 3v7h7M8 14h8m-8 3h6"/></symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></symbol>
+    <symbol id="icon-external" viewBox="0 0 24 24"><path d="M13 5h6v6m0-6-9 9"/><path d="M10 5H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></symbol>
+    <symbol id="icon-upload" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 4v12m-5-5 5 5 5-5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="icon-stack" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 9h6m-6 3h6m-6 3h4"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.3 12.1 2.3 2.3 5.1-5.1"/></symbol>
+    <symbol id="icon-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4m0 4h.01"/></symbol>
+    <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
+    <symbol id="icon-sparkle" viewBox="0 0 24 24"><path d="M12 2.5 14.6 9.4 21.5 12l-6.9 2.6L12 21.5l-2.6-6.9L2.5 12l6.9-2.6ZM19 4v4m-2-2h4"/></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 4 4"/></symbol>
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24"><path d="m10 7 5 5-5 5"/></symbol>
+    <symbol id="icon-arrow-left" viewBox="0 0 24 24"><path d="m14 7-5 5 5 5"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#analise">Pular para a análise</a>
+  <aside class="sidebar" aria-label="Navegação">
+    <a class="brand" href="#analise" aria-label="Pulse Analytics, início">
+      <span class="brand-mark"><svg class="icon"><use href="#icon-radar"></use></svg></span>
+      <span class="brand-name">Pulse<span>Analytics</span></span>
+    </a>
+    <nav class="nav">
+      <a href="#analise" aria-current="location"><svg class="icon"><use href="#icon-analysis"></use></svg> Análise</a>
+      <a href="#boletim"><svg class="icon"><use href="#icon-file"></use></svg> Boletim</a>
+      <a href="#metodologia"><svg class="icon"><use href="#icon-info"></use></svg> Metodologia</a>
+    </nav>
+    <div class="sidebar-source">
+      <span>Fonte dos dados</span>
+      <a href="https://www.consumidor.gov.br/pages/dadosabertos/externo/" target="_blank" rel="noopener noreferrer">
+        Consumidor.gov.br <svg class="icon"><use href="#icon-external"></use></svg>
+      </a>
+    </div>
+  </aside>
+
+  <main class="workspace" id="analise">
+    <div class="main-content">
+      <header class="page-header">
+        <div>
+          <h1>Análise mensal de atendimento</h1>
+          <p>Compare reclamações e gere um boletim com os números que sustentam cada conclusão.</p>
+        </div>
+        <button class="button button-secondary" type="button" id="export-button" disabled><svg class="icon"><use href="#icon-download"></use></svg> Exportar CSV</button>
+      </header>
+
+      <section class="panel import-panel" aria-labelledby="import-title">
+        <div class="panel-heading import-heading">
+          <h2 id="import-title">Bases de reclamações</h2>
+          <button class="text-button" type="button" id="demo-button">Usar dados de exemplo</button>
+        </div>
+        <div class="drop-zone" id="drop-zone">
+          <div class="drop-copy">
+            <div class="drop-icon"><svg class="icon"><use href="#icon-upload"></use></svg></div>
+            <div>
+              <strong>Arraste CSVs ou ZIPs aqui</strong>
+              <p>Use um arquivo para analisar ou envie outro mês para comparar. Até 250 MB por CSV.</p>
+            </div>
+          </div>
+          <button class="button button-primary" type="button" id="pick-files"><svg class="icon"><use href="#icon-upload"></use></svg> Selecionar arquivo</button>
+          <input class="visually-hidden" id="file-input" type="file" accept=".csv,.zip,text/csv,application/zip" multiple hidden>
+        </div>
+        <p id="import-status" class="import-status" role="status" hidden></p>
+        <ul class="import-errors" id="import-errors" role="alert" hidden></ul>
+        <div class="import-footer" id="import-footer" hidden>
+          <ul class="file-list" id="file-list" aria-label="Meses carregados"></ul>
+          <span id="dataset-origin" class="dataset-origin"></span>
+        </div>
+      </section>
+
+      <section class="empty-state panel" id="empty-state">
+        <span class="empty-icon"><svg class="icon"><use href="#icon-analysis"></use></svg></span>
+        <h2>Carregando dados de exemplo</h2>
+        <p>Você também pode selecionar um CSV do Consumidor.gov.br.</p>
+      </section>
+
+      <div id="dashboard" hidden>
+        <section class="filters" aria-label="Filtros da análise">
+          <label>Mês analisado <select id="current-month"></select></label>
+          <label>Comparar com <select id="baseline-month"></select></label>
+          <label class="segment-filter">Segmento <select id="segment-picker"></select></label>
+        </section>
+
+        <section class="metrics" aria-label="Indicadores do período">
+          <article class="panel metric">
+            <div class="metric-label"><span class="metric-icon icon-violet"><svg class="icon"><use href="#icon-stack"></use></svg></span> Reclamações finalizadas</div>
+            <strong id="total-value">—</strong>
+            <p id="total-detail"></p>
+          </article>
+          <article class="panel metric">
+            <div class="metric-label"><span class="metric-icon icon-teal"><svg class="icon"><use href="#icon-check"></use></svg></span> Reclamações avaliadas</div>
+            <strong id="evaluated-value">—</strong>
+            <p id="evaluated-detail"></p>
+          </article>
+          <article class="panel metric">
+            <div class="metric-label"><span class="metric-icon icon-amber"><svg class="icon"><use href="#icon-alert"></use></svg></span> Não resolvidas entre as avaliadas</div>
+            <strong id="unresolved-value">—</strong>
+            <p id="unresolved-detail"></p>
+          </article>
+        </section>
+
+        <div class="insights-grid">
+          <section class="panel chart-panel" aria-labelledby="chart-title">
+            <div class="panel-heading">
+              <div><h2 id="chart-title">Problemas em destaque</h2><p id="chart-subtitle"></p></div>
+            </div>
+            <div class="chart-legend" id="chart-legend" aria-hidden="true"></div>
+            <div class="chart" id="chart"></div>
+          </section>
+
+          <section class="panel brief-panel" id="boletim" aria-labelledby="brief-title">
+            <div class="panel-heading brief-heading">
+              <div><h2 id="brief-title">Boletim executivo</h2><p id="brief-context"></p></div>
+              <button class="button button-secondary small-button" type="button" id="copy-button"><svg class="icon"><use href="#icon-copy"></use></svg><span>Copiar</span></button>
+            </div>
+            <ul class="brief-list" id="brief-list"></ul>
+            <div class="investigation">
+              <strong>Próxima investigação</strong>
+              <p id="brief-question"></p>
+            </div>
+            <div class="ai-footer">
+              <button class="text-button ai-button" type="button" id="ai-button"><svg class="icon"><use href="#icon-sparkle"></use></svg> Gerar boletim com IA</button>
+              <span id="ai-status" role="status"></span>
+            </div>
+            <section class="ai-summary" id="ai-summary" aria-labelledby="ai-title" hidden>
+              <div class="panel-heading">
+                <h3 id="ai-title">Rascunho com IA</h3>
+                <button class="text-button" type="button" id="copy-ai-button">Copiar rascunho</button>
+              </div>
+              <p class="ai-brief-text" id="ai-brief-text"></p>
+            </section>
+          </section>
+        </div>
+
+        <section class="panel table-panel" aria-labelledby="table-title">
+          <div class="panel-heading table-heading">
+            <div><h2 id="table-title">Dados por problema</h2><p id="table-subtitle"></p></div>
+            <div class="table-controls">
+              <label class="search-box"><svg class="icon"><use href="#icon-search"></use></svg><span class="visually-hidden">Buscar problema</span><input type="search" id="search" placeholder="Buscar problema"></label>
+              <label><span class="visually-hidden">Ordenar problemas</span><select id="sort-order"><option value="volume">Maior volume</option><option value="increase">Maior aumento</option><option value="decrease">Maior queda</option><option value="alphabetical">Ordem alfabética</option></select></label>
+            </div>
+          </div>
+          <div class="table-scroll" tabindex="0" aria-label="Tabela de reclamações, rolável horizontalmente">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Problema</th><th scope="col" id="current-column">Mês analisado</th><th scope="col" class="comparison-column">Comparação</th>
+                  <th scope="col" class="comparison-column">Diferença</th><th scope="col">Avaliadas</th><th scope="col">Não resolvidas</th><th scope="col">% não resolvidas</th>
+                </tr>
+              </thead>
+              <tbody id="table-body"></tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="table-range"></span><div class="pagination">
+            <button type="button" class="icon-button" id="page-prev" aria-label="Página anterior"><svg class="icon"><use href="#icon-arrow-left"></use></svg></button>
+            <button type="button" class="icon-button" id="page-next" aria-label="Próxima página"><svg class="icon"><use href="#icon-arrow-right"></use></svg></button>
+          </div></div>
+        </section>
+      </div>
+
+      <section class="panel methodology" id="metodologia" aria-labelledby="method-title">
+        <details>
+          <summary id="method-title"><svg class="icon"><use href="#icon-info"></use></svg><span>Metodologia e qualidade dos dados</span><svg class="icon caret"><use href="#icon-chevron"></use></svg></summary>
+          <div class="method-body">
+            <p>O mês vem da <strong>data de finalização</strong>. As diferenças representam variações em números de registros no Consumidor.gov.br. Reclamações canceladas ou encerradas ficam fora do cálculo.</p>
+            <p>A taxa de não resolução usa apenas casos com avaliação de desfecho “resolvida” ou “não resolvida”. Os números descrevem os registros da plataforma para o recorte selecionado.</p>
+            <p>O navegador processa os arquivos e calcula o boletim. Ao gerar um rascunho com IA, o painel envia ao n8n o mês, o segmento e os indicadores dos problemas em destaque.</p>
+            <p>Você pode importar os ZIPs oficiais diretamente, com um CSV por arquivo. <a href="https://www.consumidor.gov.br/pages/dadosabertos/externo/" target="_blank" rel="noopener noreferrer">Dados abertos</a> · <a href="https://dados.mj.gov.br/dataset/0182f1bf-e73d-42b1-ae8c-fa94d9ce9451/resource/90aedbfe-3c91-4c18-86a5-f408d07e7210/download/dicionario-de-dados---consumidorgovbr-v3.pdf" target="_blank" rel="noopener noreferrer">Dicionário de dados</a></p>
+            <div id="quality-report"></div>
+          </div>
+        </details>
+      </section>
+    </div>
+  </main>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <noscript>Ative o JavaScript para importar e analisar os arquivos.</noscript>
+  <script type="module" src="./app.mjs"></script>
+</body>
+</html>

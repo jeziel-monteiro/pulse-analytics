@@ -1,0 +1,26 @@
+# Credenciais e configurações locais
+.env
+.env.*
+!.env.example
+.n8n/
+.aws/
+.codex/
+.agents/
+*.pem
+*.key
+
+# Bases importadas e pacotes locais; a demonstração agregada fica em dist/demo.json
+*.csv
+*.zip
+
+# Dependências e arquivos temporários
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.log
+.DS_Store
+Thumbs.db
+
+# dist/ contém o código-fonte servido diretamente e deve ser versionado.

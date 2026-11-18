@@ -1,0 +1,79 @@
+{
+  "name": "Pulse Analytics — Boletim",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pulse-boletim",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c9768476-aec6-4796-8ac6-6dc1c1d538e4",
+      "name": "Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Escreva um boletim curto de atendimento em português.\nInforme o mês e o segmento. Se houver comparação, destaque a maior\nvariação em número de casos. Se houver só um mês, destaque o problema\nmais frequente. Use apenas os números fornecidos e termine com uma\npergunta de investigação.\nUse linguagem neutra e chame os registros de reclamações.\nReserve qualificações como “crítico” ou “expressivo” para situações\ncom critérios explícitos nos dados.\nApresente possíveis causas como hipóteses a investigar.\nTermine com uma pergunta aberta sobre a concentração das reclamações\npor tipo, canal ou etapa da jornada.\nIndicadores recebidos\n{{ JSON.stringify($json.body) }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        224,
+        0
+      ],
+      "id": "6635e08a-a199-4b81-96d2-b8b3f40102e2",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        240
+      ],
+      "id": "4731c7a0-3af0-4d42-afd4-86955d579fce",
+      "name": "Google Gemini Chat Model"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  }
+}
